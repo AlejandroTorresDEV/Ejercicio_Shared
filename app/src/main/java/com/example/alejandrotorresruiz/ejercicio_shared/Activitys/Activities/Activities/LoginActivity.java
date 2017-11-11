@@ -106,5 +106,9 @@ public class LoginActivity extends AppCompatActivity {
         String password = prefs.getString("password","");
         editTextEmail.setText(correo);
         editTextPassword.setText(password);
+        if(!correo.isEmpty() && !password.isEmpty()){
+            switchRecordar.setChecked(true);
+        }
+
     }
 }
