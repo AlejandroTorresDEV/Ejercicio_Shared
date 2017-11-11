@@ -1,6 +1,8 @@
 package com.example.alejandrotorresruiz.ejercicio_shared.Activitys.Activities.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +17,7 @@ import com.example.alejandrotorresruiz.ejercicio_shared.R;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private SharedPreferences prefs;
     private EditText editTextEmail,editTextPassword;
     private Button buttonAcceso;
     private Switch switchRecordar;
@@ -24,7 +27,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        prefs = getSharedPreferences("MisPreferecias", Context.MODE_PRIVATE);
+
         buildUI();
+
+        recogerDatosShared();
 
         buttonAcceso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
 
                 if(validarAcceso(email,password)){
+                    guardarShared(email,password);
                     accederMain();
                 }
             }
@@ -51,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
+
     private boolean validarAcceso(String email,String password){
         if(!validarEmail(email)){
             Toast.makeText(this,"El email es incorrecto",Toast.LENGTH_LONG).show();
@@ -59,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this,"La constraseña no es correcta",Toast.LENGTH_LONG).show();
             return false;
         }else{
-            Toast.makeText(this,"Correcto ACCEDIENDO",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Datos correctos Accediendo",Toast.LENGTH_LONG).show();
             return true;
         }
     }
@@ -80,5 +89,22 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             return false;
         }
+    }
+
+    //SI EL SWITCH ESTA ACTIVADO GUARDAREMOS EL EMAIL Y EL PASSWORD EN LAS SHAREDPREFERENCES
+    public void guardarShared(String email,String password){
+        if(switchRecordar.isChecked()){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("email",email);
+            editor.putString("password",password);
+            editor.commit();
+        }
+    }
+
+    public void recogerDatosShared(){
+        String correo = prefs.getString("email","");
+        String password = prefs.getString("password","");
+        editTextEmail.setText(correo);
+        editTextPassword.setText(password);
     }
 }
