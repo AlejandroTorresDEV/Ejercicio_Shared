@@ -1,7 +1,9 @@
-package com.example.alejandrotorresruiz.ejercicio_shared;
+package com.example.alejandrotorresruiz.ejercicio_shared.Activitys.Activities.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.alejandrotorresruiz.ejercicio_shared.R;
 
 public class MainActivity extends AppCompatActivity {
 
